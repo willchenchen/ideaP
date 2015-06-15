@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>My Page</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"/>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <style>
+        .tab{border-collapse:collapse;border:1px solid #9BDF70;margin:0 auto;}
+    </style>
+</head>
+<body>
+<div data-role="page">
+    <div data-role="header">
+        <h1>My Title</h1>
+    </div>
+    <div data-role="content">
+        <p>Hello world</p>
+
+        <form id="form1" action="/hello" method="POST" enctype="multipart/form-data">
+            <input name="starDate" type="number" maxlength="2" placeholder="起始时间"/>
+            <input name="endDate" type="number" maxlength="2" placeholder="终止时间"/>
+            <input href="index.jsp" type="button" id="send" value="提交"/>
+        </form>
+    </div>
+    <table id="out" class="tab"></table>
+    <div data-role="footer">
+        <h4>Footer content</h4>
+    </div>
+</div>
+<script>
+    $("#send").click(function () {
+        var form = $(this).parents("form");
+        //alert(form.html());
+        $.post(form.attr("action"), form.serialize(), function (data) {
+            /*console.info(data);*/
+            if (data.errorCode == 0 && data.result) {
+                alert('提交成功');
+                var t = data.result;
+                for (var k in t) {
+                    $("#out").append("<tr><td>" + k + "\t" + t[k] + "</td></tr>");
+                }
+            }
+
+        }, 'JSON');
+    })
+</script>
+</body>
+</html>
